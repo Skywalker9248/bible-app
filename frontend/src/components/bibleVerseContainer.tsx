@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { BIBLE_BOOKS } from '../helpers/constants';
+import { FaMagnifyingGlass } from 'react-icons/fa6';
+import type { VerseData } from '../types/types';
 
 const BibleVerseContainer = () => {
   const [selectedBookId, setSelectedBookId] = useState(1); // Default to Genesis
   const [selectedChapter, setSelectedChapter] = useState(1);
   const [selectedVerse, setSelectedVerse] = useState(1);
+  const [disableSearch, setDisableSearch] = useState(false);
+  const [verseData, setVerseData] = useState<VerseData | null>(null);
 
   // Find the currently selected book
   const selectedBook = BIBLE_BOOKS.find((book) => book.id === selectedBookId);
@@ -28,6 +32,26 @@ const BibleVerseContainer = () => {
 
   const handleVerseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedVerse(parseInt(e.target.value));
+  };
+
+  const getVerse = async () => {
+    try {
+      const response = await fetch(
+        `/api/verses/${selectedBook?.name} ${selectedChapter}:${selectedVerse}`
+      );
+      const data = await response.json();
+      setVerseData(data);
+    } catch (error) {
+      console.error(error);
+      setVerseData(null);
+    } finally {
+      setDisableSearch(false);
+    }
+  };
+
+  const handleSearch = () => {
+    setDisableSearch(true);
+    getVerse();
   };
 
   return (
@@ -79,6 +103,23 @@ const BibleVerseContainer = () => {
           {selectedBook?.name} {selectedChapter}:{selectedVerse}
         </p>
       </div>
+      <button
+        className='search-button'
+        onClick={handleSearch}
+        disabled={disableSearch}
+      >
+        Search <FaMagnifyingGlass />
+      </button>
+
+      {verseData && (
+        <div className='verse-data'>
+          <h3>{verseData.reference}</h3>
+          <p className='verse-text'>{verseData.text}</p>
+          <p className='translation-info'>
+            {verseData.translation_name} ({verseData.translation_id})
+          </p>
+        </div>
+      )}
     </BibleVerseContainerWrapper>
   );
 };
@@ -120,6 +161,64 @@ const BibleVerseContainerWrapper = styled.div`
     font-size: 16px;
     font-weight: 600;
     color: #333;
+  }
+
+  .search-button {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    background-color: #4a90e2;
+    color: white;
+    cursor: pointer;
+  }
+
+  .search-button:hover {
+    background-color: #357abd;
+  }
+
+  .search-button:focus {
+    outline: none;
+    border-color: #357abd;
+  }
+
+  .search-button:active {
+    background-color: #2a6699;
+  }
+
+  .search-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+
+  .verse-data {
+    max-width: 600px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    margin-top: 20px;
+
+    h3 {
+      margin: 0 0 15px 0;
+      color: #4a90e2;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .verse-text {
+      margin: 0 0 15px 0;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .translation-info {
+      margin: 0;
+      font-size: 12px;
+      color: #666;
+      font-style: italic;
+    }
   }
 `;
 

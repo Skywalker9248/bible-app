@@ -1,12 +1,5 @@
 import styled from "styled-components";
-
-type DashboardWidget = {
-  id: number;
-  name: string;
-  description: string;
-  icon: string;
-  route: string;
-};
+import type { DashboardWidget } from "../types/types";
 
 const BibleHomePage = ({
   dashboardWidgets,
