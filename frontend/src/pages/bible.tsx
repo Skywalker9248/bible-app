@@ -17,11 +17,9 @@ const BibleContainer = styled.div`
   font-size: 2rem;
   font-weight: 600;
   color: #ffffff;
-  background: #1e1e1e;
+  background: #00000;
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border: 1px solid #333;
 `;
 
 export default BiblePage;

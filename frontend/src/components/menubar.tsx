@@ -1,16 +1,18 @@
 import styled from "styled-components";
 import { FaCross } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const MenuBar = () => {
-    return (
-        <NavbarContainer>
-            <BrandContainer>
-                <BrandText>Bible App</BrandText>
-                <CrossIcon />
-            </BrandContainer>
-        </NavbarContainer>
-    )
-}
+  const navigate = useNavigate();
+  return (
+    <NavbarContainer onClick={() => navigate("/")}>
+      <BrandContainer>
+        <BrandText>Bible App</BrandText>
+        <CrossIcon />
+      </BrandContainer>
+    </NavbarContainer>
+  );
+};
 
 const NavbarContainer = styled.nav`
   position: fixed;
