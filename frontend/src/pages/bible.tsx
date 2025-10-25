@@ -1,10 +1,12 @@
 import styled from "styled-components";
+import BibleVerseContainer from "../components/bibleVerseContainer";
 
 const BiblePage = () => {
   return (
     <BibleContainer>
       <h3>Your word is a lamp to my feet and a light to my path.</h3>
       <p>Psalms 119:105</p>
+      <BibleVerseContainer />
     </BibleContainer>
   );
 };

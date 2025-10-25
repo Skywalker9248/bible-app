@@ -1,10 +1,12 @@
 // App.js
 import { useState, useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import SplashScreen from "./components/splashScreen";
 import BibleHomePage from "./pages/bibleHome";
 import { useAppSetupContext } from "./hooks/useAppSetupContext";
 import MenuBar from "./components/menubar";
+import BiblePage from "./pages/bible";
 
 // Optional: global styles to remove default margin
 const GlobalStyle = createGlobalStyle`
@@ -70,7 +72,10 @@ function App() {
       ) : (
         <>
           <MenuBar />
-          <BibleHomePage dashboardWidgets={dashboardWidgets} />
+          <Routes>
+            <Route path="/" element={<BibleHomePage dashboardWidgets={dashboardWidgets} />} />
+            <Route path="/bible" element={<BiblePage />} />
+          </Routes>
         </>
       )}
     </>
